@@ -1,7 +1,8 @@
+#include "pch.h"
 #include "Logger.h"
 
 
-void Logger::Log(LogLevel level, const std::string& message, const std::source_location loc)
+void Logger::Log(LogLevel level, const std::string_view& message, const std::source_location loc)
 {
     switch (level)
     {
@@ -44,37 +45,37 @@ void Logger::Log(LogLevel level, const std::string& message, const std::source_l
 }
 
 
-void Logger::Log(const std::string& msg, const std::source_location loc)
+void Logger::Log(const std::string_view& msg, const std::source_location loc)
 {
     Log(LogLevel::None, msg, loc);
 }
 
-void Logger::Info(const std::string& msg, const std::source_location loc)
+void Logger::Info(const std::string_view& msg, const std::source_location loc)
 {
     Log(LogLevel::Info, msg, loc);
 }
 
-void Logger::Success(const std::string& msg, const std::source_location loc)
+void Logger::Success(const std::string_view& msg, const std::source_location loc)
 {
     Log(LogLevel::Success, msg, loc);
 }
 
-void Logger::Warn(const std::string& msg, const std::source_location loc)
+void Logger::Warn(const std::string_view& msg, const std::source_location loc)
 {
     Log(LogLevel::Warning, msg, loc);
 }
 
-void Logger::Error(const std::string& msg, const std::source_location loc)
+void Logger::Error(const std::string_view& msg, const std::source_location loc)
 {
     Log(LogLevel::Error, msg, loc);
 }
 
-void Logger::Vulkan(const std::string& msg, const std::source_location loc)
+void Logger::Vulkan(const std::string_view& msg, const std::source_location loc)
 {
     Log(LogLevel::Vulkan, msg, loc);
 }
 
-void Logger::Section(const std::string& msg, const std::source_location loc)
+void Logger::Section(const std::string_view& msg, const std::source_location loc)
 {
     Log(LogLevel::Section, msg, loc);
 }
