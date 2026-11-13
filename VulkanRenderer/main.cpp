@@ -7,13 +7,10 @@
 
 int main()
 {
-	VulkanRenderer::VulkanApp app;
-
 	try
 	{
-		app.Init();
+		VulkanRenderer::VulkanApp app;
 		app.Run();
-		app.Cleanup();
 	}
 	catch (const VulkanException&)
 	{

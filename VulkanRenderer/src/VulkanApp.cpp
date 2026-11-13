@@ -10,7 +10,14 @@ namespace VulkanRenderer
 		, m_EngineName(engineName)
 		, mp_Window(nullptr)
 		, m_Instance(nullptr)
-	{}
+	{
+		Init();
+	}
+
+	VulkanApp::~VulkanApp()
+	{
+		Cleanup();
+	}
 
 
 	void VulkanApp::Init()
@@ -30,7 +37,12 @@ namespace VulkanRenderer
 
 	void VulkanApp::Cleanup()
 	{
+		Logger::Section("Cleaning up");
 
+		glfwDestroyWindow(mp_Window);
+		glfwTerminate();
+
+		Logger::Success("Cleanup complete");
 	}
 
 
@@ -93,7 +105,9 @@ namespace VulkanRenderer
 		appInfo.engineVersion		= VK_MAKE_VERSION(0, 1, 0);
 		appInfo.apiVersion			= VK_API_VERSION_1_4;
 
+		PrintAvailableExtensions();
 		std::vector<const char*> extensions = GetRequiredExtensions();
+		PrintRequiredExtensions(extensions);
 
 		vk::InstanceCreateInfo createInfo{};
 		createInfo.pApplicationInfo			= &appInfo;
@@ -107,8 +121,6 @@ namespace VulkanRenderer
 		Logger::Success("vk::Instance created");
 		if (kb_EnableValidation)
 			Logger::Info("Validation layers active");
-
-		PrintAvailableExtensions();
 	}
 
 
@@ -134,6 +146,14 @@ namespace VulkanRenderer
 		}
 	}
 
+	void VulkanApp::PrintAvailableExtensions()
+	{
+		std::vector<vk::ExtensionProperties> extensions = vk::enumerateInstanceExtensionProperties();
+		Logger::Info("Available Vulkan instance extensions (" + std::to_string(extensions.size()) + "):");
+		for (const vk::ExtensionProperties& ext : extensions)
+			Logger::Log(std::string("    ") + ext.extensionName.data());
+	}
+
 	std::vector<const char*> VulkanApp::GetRequiredExtensions()
 	{
 		std::uint32_t glfwExtensionCount = 0;
@@ -151,12 +171,11 @@ namespace VulkanRenderer
 		return extensions;
 	}
 
-	void VulkanApp::PrintAvailableExtensions()
+	void VulkanApp::PrintRequiredExtensions(const std::vector<const char*>& extensions)
 	{
-		auto extensions = vk::enumerateInstanceExtensionProperties();
-		Logger::Info("Available Vulkan instance extensions (" + std::to_string(extensions.size()) + "):");
-		for (const auto& ext : extensions)
-			Logger::Log(std::string("    ") + ext.extensionName.data());
+		Logger::Info("Required extensions (" + std::to_string(extensions.size()) + "):");
+		for (const char* ext : extensions)
+			Logger::Log(std::string("    ") + ext);
 	}
 
 

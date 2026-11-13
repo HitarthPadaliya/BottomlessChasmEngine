@@ -44,6 +44,7 @@ namespace VulkanRenderer
 
 		public:
 			VulkanApp(std::string_view appName = "Descent", std::string_view engineName = "BottomlessChasm", glm::uvec2 windowSize = {1280, 720});
+			~VulkanApp();
 
 			void Init();
 			void Run();
@@ -59,8 +60,9 @@ namespace VulkanRenderer
 			void CreateInstance();
 
 			void CheckValidationLayerSupport();
-			std::vector<const char*> GetRequiredExtensions();
 			void PrintAvailableExtensions();
+			std::vector<const char*> GetRequiredExtensions();
+			void PrintRequiredExtensions(const std::vector<const char*>& extensions);
 
 			void MainLoop();
 
